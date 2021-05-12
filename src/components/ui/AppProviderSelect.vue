@@ -53,6 +53,12 @@ export default {
   name: 'AppProviderSelect',
   components: { AppDialogConfirm },
   mixins: [formValidations],
+  props: {
+    providerId: {
+      type: Number,
+      default: null
+    }
+  },
   data: () => ({
     providers: [],
     showDialog: false,
@@ -89,6 +95,14 @@ export default {
         this.providerSelected = ''
         this.closeDialog()
       }
+    }
+  },
+  watch: {
+    providerId(prop) {
+      if (prop)
+        this.providerSelected = this.providers.find(
+          provider => provider.id === prop
+        )
     }
   }
 }

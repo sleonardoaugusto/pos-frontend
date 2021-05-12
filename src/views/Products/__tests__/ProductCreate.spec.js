@@ -33,6 +33,4 @@ describe('<ProductCreate />', () => {
   it('Component should be defined', () => {
     expect(wrapper.vm).toBeDefined()
   })
-
-  it('', () => {})
 })

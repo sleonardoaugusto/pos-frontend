@@ -1,15 +1,15 @@
 <template>
   <div>
-    <AppProviderSelect />
+    <ProductForm />
   </div>
 </template>
 
 <script>
-import AppProviderSelect from '@/components/ui/AppProviderSelect'
+import ProductForm from '@/components/Product/ProductForm'
 
 export default {
   name: 'ProductCreate',
-  components: { AppProviderSelect }
+  components: { ProductForm }
 }
 </script>
 

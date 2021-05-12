@@ -67,4 +67,16 @@ describe('<AppProviderSelect />', () => {
     expect(spy).not.toHaveBeenCalled()
     expect(invalidFeedback(wrapper, '#provider-name')).toBe('Campo obrigatório')
   })
+
+  it('Should set value props', async () => {
+    const providers = [{ id: 1, name: 'Maria Isabel' }]
+    services.providers.getAll.mockResolvedValueOnce(providers)
+    wrapper = factory()
+    await flushPromises()
+
+    await wrapper.setProps({ providerId: 1 })
+    expect(
+      wrapper.findComponent({ ref: 'providersSelect' }).vm.value
+    ).toStrictEqual(providers[0])
+  })
 })

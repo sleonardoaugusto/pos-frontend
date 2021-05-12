@@ -1,13 +1,16 @@
 <template>
-
+  <v-form>
+    <AppProviderSelect />
+  </v-form>
 </template>
 
 <script>
+import AppProviderSelect from '@/components/ui/AppProviderSelect'
+
 export default {
-  name: "ProductForm"
+  name: 'ProductForm',
+  components: { AppProviderSelect }
 }
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
