@@ -3,13 +3,15 @@
     <v-col cols="12" md="6">
       <v-combobox
         id="provider-select"
-        ref="providersSelect"
+        ref="providerSelect"
         label="Fornecedor"
-        v-model="providerSelected"
+        v-model="$v.form.providerSelected.$model"
         :items="providers"
         item-value="id"
         item-text="name"
-        @update:search-input="value => (providerName = value)"
+        @update:search-input="value => (form.providerName = value)"
+        @change="$emit('select', $event)"
+        :error-messages="errorMessage('providerSelected')"
       >
         <template v-slot:no-data>
           <v-list-item>
@@ -62,13 +64,16 @@ export default {
   data: () => ({
     providers: [],
     showDialog: false,
-    providerSelected: '',
     form: {
+      providerSelected: '',
       providerName: ''
     }
   }),
   validations: {
     form: {
+      providerSelected: {
+        required
+      },
       providerName: {
         required
       }
@@ -89,10 +94,10 @@ export default {
     },
     async onConfirm() {
       this.touch()
-      if (this.formIsReady) {
+      if (!this.$v.form.providerName.$invalid) {
         await services.providers.create(this.form.providerName)
         await this.getProviders()
-        this.providerSelected = ''
+        this.form.providerSelected = ''
         this.closeDialog()
       }
     }
@@ -100,7 +105,7 @@ export default {
   watch: {
     providerId(prop) {
       if (prop)
-        this.providerSelected = this.providers.find(
+        this.form.providerSelected = this.providers.find(
           provider => provider.id === prop
         )
     }

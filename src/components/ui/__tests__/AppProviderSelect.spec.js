@@ -45,7 +45,7 @@ describe('<AppProviderSelect />', () => {
 
     await flushPromises()
     expect(
-      wrapper.findComponent({ ref: 'providersSelect' }).vm.items
+      wrapper.findComponent({ ref: 'providerSelect' }).vm.items
     ).toStrictEqual(providers)
   })
 
@@ -54,9 +54,16 @@ describe('<AppProviderSelect />', () => {
     await wrapper.setData({ showDialog: true })
 
     const providerName = faker.lorem.word()
-    await wrapper.find('#provider-name').setValue(providerName)
+    await wrapper.find('#provider-select').setValue(providerName)
     await wrapper.find('#confirm').trigger('click')
     expect(spy).toHaveBeenCalledWith(providerName)
+  })
+
+  it('Provider select should be required', async () => {
+    await wrapper.vm.touch()
+    expect(invalidFeedback(wrapper, '#provider-select')).toBe(
+      'Campo obrigatório'
+    )
   })
 
   it('Provider name should be required', async () => {
@@ -76,7 +83,15 @@ describe('<AppProviderSelect />', () => {
 
     await wrapper.setProps({ providerId: 1 })
     expect(
-      wrapper.findComponent({ ref: 'providersSelect' }).vm.value
+      wrapper.findComponent({ ref: 'providerSelect' }).vm.value
     ).toStrictEqual(providers[0])
+  })
+
+  it('Provider select should emit event', async () => {
+    const payload = faker.random.uuid()
+    await wrapper
+      .findComponent({ ref: 'providerSelect' })
+      .vm.$emit('change', payload)
+    expect(wrapper.emitted().select).toBeTruthy()
   })
 })

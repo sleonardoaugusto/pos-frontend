@@ -5,7 +5,6 @@ import Vuelidate from 'vuelidate'
 import VueTheMask from 'vue-the-mask'
 import busy from '@/mixins/busy'
 import { mount } from '@vue/test-utils'
-import services from '@/services'
 
 jest.mock('@/services')
 
