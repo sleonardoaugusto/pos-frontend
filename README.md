@@ -1,6 +1,6 @@
-# pos
+# pos-frontend
 
-[![Tests](https://github.com/sleonardoaugusto/pos/actions/workflows/main.yaml/badge.svg)](https://github.com/sleonardoaugusto/pos/actions/workflows/main.yaml)
+[![Tests](https://github.com/sleonardoaugusto/pos-frontend/actions/workflows/main.yaml/badge.svg)](https://github.com/sleonardoaugusto/pos-frontend/actions/workflows/main.yaml)
 
 ## Project setup
 
