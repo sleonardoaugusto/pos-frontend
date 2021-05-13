@@ -10,23 +10,23 @@
       </v-col>
       <v-col cols="12" md="6">
         <v-text-field
-          id="product-name"
-          ref="productName"
+          id="name"
+          ref="Name"
           label="Nome do Produto"
-          v-model="$v.form.product_name.$model"
-          :error-messages="errorMessage('product_name')"
+          v-model="$v.form.name.$model"
+          :error-messages="errorMessage('name')"
         />
       </v-col>
     </v-row>
     <v-row>
       <v-col cols="12" md="6">
         <v-text-field
-          id="product-qty"
-          ref="productQty"
+          id="qty"
+          ref="Qty"
           label="Quantidade"
           type="number"
-          v-model="$v.form.product_qty.$model"
-          :error-messages="errorMessage('product_qty')"
+          v-model="$v.form.qty.$model"
+          :error-messages="errorMessage('qty')"
         />
       </v-col>
     </v-row>
@@ -50,8 +50,8 @@ export default {
   data: () => ({
     form: {
       provider: '',
-      product_name: '',
-      product_qty: 1
+      name: '',
+      qty: 1
     }
   }),
   validations() {
@@ -60,10 +60,10 @@ export default {
         provider: {
           providerIsInvalid: () => this.$refs.appProviderSelect.formIsReady
         },
-        product_name: {
+        name: {
           required
         },
-        product_qty: {
+        qty: {
           required
         }
       }

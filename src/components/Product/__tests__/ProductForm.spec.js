@@ -47,21 +47,9 @@ describe('<Product />', () => {
   })
 
   it.each([
-    ['#product-name', 'productName'],
-    ['#product-qty', 'productQty']
-  ])(
-    '%s field should should be invalid if has no value',
-    async (fieldId, fieldRef) => {
-      await wrapper.find(fieldId).setValue(null)
-      expect(wrapper.findComponent({ ref: fieldRef }).vm.errorMessages).toBe(
-        'Campo obrigatório'
-      )
-    }
-  )
-
-  it.each([
-    ['#product-name', 'productName', faker.random.word()],
-    ['#product-qty', 'productQty', faker.random.number({ min: 1 })]
+    ['#name', 'Name', faker.random.word()],
+    ['#qty', 'Qty', faker.random.number({ min: 1 })],
+    ['#description', 'Qty', faker.random.number({ min: 1 })]
   ])(
     '%s name field should should be valid if has value',
     async (fieldId, fieldRef, value) => {
@@ -73,16 +61,32 @@ describe('<Product />', () => {
   )
 
   it.each([
-    ['#product-name', 'productName'],
-    ['#product-qty', 'productQty']
-  ])('Should touch %s field on submit button click', async (_, fieldRef) => {
-    await wrapper.setData({ form: {} })
+    ['#name', 'Name'],
+    ['#qty', 'Qty']
+  ])(
+    '%s field should should be invalid if has no value',
+    async (fieldId, fieldRef) => {
+      await wrapper.find(fieldId).setValue(null)
+      expect(wrapper.findComponent({ ref: fieldRef }).vm.errorMessages).toBe(
+        'Campo obrigatório'
+      )
+    }
+  )
 
-    await wrapper.find('#submit').trigger('click')
-    expect(wrapper.findComponent({ ref: fieldRef }).vm.errorMessages).toBe(
-      'Campo obrigatório'
-    )
-  })
+  it.each([
+    ['#name', 'Name'],
+    ['#qty', 'Qty']
+  ])(
+    'Should touch %s field should be invalid on submit button click',
+    async (_, fieldRef) => {
+      await wrapper.setData({ form: {} })
+
+      await wrapper.find('#submit').trigger('click')
+      expect(wrapper.findComponent({ ref: fieldRef }).vm.errorMessages).toBe(
+        'Campo obrigatório'
+      )
+    }
+  )
 
   it('Should not emit submit event on button click if provider component is not valid', async () => {
     AppProviderSelectStub.computed.formIsReady = () => false
@@ -94,8 +98,8 @@ describe('<Product />', () => {
   })
 
   it.each([
-    ['product_name', null],
-    ['product_qty', null]
+    ['name', null],
+    ['qty', null]
   ])(
     'should not emit submit event on button click if %s form attribute is not valid',
     async (attr, value) => {
@@ -108,19 +112,20 @@ describe('<Product />', () => {
   )
 
   it('Should emit submit event on button click if form is valid', async () => {
-    const { provider, product_qty, product_name } = await fillForm()
+    const { provider, qty, name, description } = await fillForm()
     await wrapper.find('#submit').trigger('click')
     expect(wrapper.emitted().submit).toBeTruthy()
     expect(wrapper.emitted().submit[0]).toEqual([
-      { provider, product_qty, product_name }
+      { provider, qty, name, description }
     ])
   })
 
   const fillForm = async () => {
     const data = {
       provider: faker.random.uuid(),
-      product_name: faker.random.word(),
-      product_qty: faker.random.number({ min: 1 })
+      name: faker.random.word(),
+      qty: faker.random.number({ min: 1 }),
+      description: faker.random.word()
     }
     await wrapper.setData({ form: { ...data } })
     return { ...data }
