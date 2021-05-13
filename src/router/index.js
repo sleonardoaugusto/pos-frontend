@@ -3,9 +3,6 @@ import VueRouter from 'vue-router'
 
 const Login = import('@/views/Login')
 
-const ProductsList = import('@/views/Product/ProductsList')
-const ProductCreate = import('@/views/Product/ProductCreate')
-
 Vue.use(VueRouter)
 
 export const routes = [
@@ -15,18 +12,8 @@ export const routes = [
     component: () => Login
   },
   {
-    path: '/produtos/',
-    name: 'products-list',
-    component: () => ProductsList
-  },
-  {
-    path: '/produtos/novo',
-    name: 'products-create',
-    component: () => ProductCreate
-  },
-  {
     path: '*',
-    redirect: '/produtos'
+    redirect: '/'
   }
 ]
 
