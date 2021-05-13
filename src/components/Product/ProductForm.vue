@@ -29,8 +29,6 @@
           :error-messages="errorMessage('qty')"
         />
       </v-col>
-    </v-row>
-    <v-row>
       <v-col cols="12" md="6">
         <v-text-field
           id="description"
