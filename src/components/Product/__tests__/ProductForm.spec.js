@@ -47,9 +47,9 @@ describe('<Product />', () => {
   })
 
   it.each([
-    ['#name', 'Name', faker.random.word()],
-    ['#qty', 'Qty', faker.random.number({ min: 1 })],
-    ['#description', 'Qty', faker.random.number({ min: 1 })]
+    ['#name', 'name', faker.random.word()],
+    ['#qty', 'qty', faker.random.number({ min: 1 })],
+    ['#description', 'description', faker.random.number({ min: 1 })]
   ])(
     '%s name field should should be valid if has value',
     async (fieldId, fieldRef, value) => {
@@ -61,8 +61,8 @@ describe('<Product />', () => {
   )
 
   it.each([
-    ['#name', 'Name'],
-    ['#qty', 'Qty']
+    ['#name', 'name'],
+    ['#qty', 'qty']
   ])(
     '%s field should should be invalid if has no value',
     async (fieldId, fieldRef) => {
@@ -74,8 +74,8 @@ describe('<Product />', () => {
   )
 
   it.each([
-    ['#name', 'Name'],
-    ['#qty', 'Qty']
+    ['#name', 'name'],
+    ['#qty', 'qty']
   ])(
     'Should touch %s field should be invalid on submit button click',
     async (_, fieldRef) => {

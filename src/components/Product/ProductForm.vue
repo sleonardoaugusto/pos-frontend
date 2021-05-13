@@ -11,7 +11,7 @@
       <v-col cols="12" md="6">
         <v-text-field
           id="name"
-          ref="Name"
+          ref="name"
           label="Nome do Produto"
           v-model="$v.form.name.$model"
           :error-messages="errorMessage('name')"
@@ -22,7 +22,7 @@
       <v-col cols="12" md="6">
         <v-text-field
           id="qty"
-          ref="Qty"
+          ref="qty"
           label="Quantidade"
           type="number"
           v-model="$v.form.qty.$model"
