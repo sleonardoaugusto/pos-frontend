@@ -60,12 +60,12 @@ describe('<Product />', () => {
   )
 
   it.each([
-    ['#product-name', 'productName'],
-    ['#product-qty', 'productQty']
+    ['#product-name', 'productName', faker.random.word()],
+    ['#product-qty', 'productQty', faker.random.number({ min: 1 })]
   ])(
     '%s name field should should be valid if has value',
-    async (fieldId, fieldRef) => {
-      await wrapper.find(fieldId).setValue(faker.random.word())
+    async (fieldId, fieldRef, value) => {
+      await wrapper.find(fieldId).setValue(value)
       expect(wrapper.findComponent({ ref: fieldRef }).vm.errorMessages).toBe(
         null
       )

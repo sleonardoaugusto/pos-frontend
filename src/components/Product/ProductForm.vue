@@ -24,6 +24,7 @@
           id="product-qty"
           ref="productQty"
           label="Quantidade"
+          type="number"
           v-model="$v.form.product_qty.$model"
           :error-messages="errorMessage('product_qty')"
         />
