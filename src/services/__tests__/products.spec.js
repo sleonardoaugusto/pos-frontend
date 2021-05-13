@@ -1,7 +1,7 @@
 import Products from '@/services/products'
 import faker from 'faker'
 
-describe('Products service', () => {
+describe('Product service', () => {
   let service
   let httpClient
 

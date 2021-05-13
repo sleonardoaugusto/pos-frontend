@@ -77,21 +77,21 @@ describe('<AppProviderSelect />', () => {
 
   it('Should set value props', async () => {
     const providers = [{ id: 1, name: 'Maria Isabel' }]
-    services.providers.getAll.mockResolvedValueOnce(providers)
-    wrapper = factory()
-    await flushPromises()
+    wrapper.setData({ providers: providers })
 
-    await wrapper.setProps({ providerId: 1 })
+    await wrapper.setProps({ value: 1 })
     expect(
       wrapper.findComponent({ ref: 'providerSelect' }).vm.value
     ).toStrictEqual(providers[0])
   })
 
-  it('Provider select should emit event', async () => {
-    const payload = faker.random.uuid()
+  it('Provider select should emit select event', async () => {
+    const payload = { id: faker.random.uuid(), name: faker.random.word() }
     await wrapper
       .findComponent({ ref: 'providerSelect' })
       .vm.$emit('change', payload)
+
     expect(wrapper.emitted().select).toBeTruthy()
+    expect(wrapper.emitted().select[0]).toEqual([payload.id])
   })
 })

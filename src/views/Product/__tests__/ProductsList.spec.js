@@ -1,4 +1,4 @@
-import Products from '@/views/Products/ProductsList'
+import Products from '@/views/Product/ProductsList'
 import Vue from 'vue'
 import Vuetify from 'vuetify'
 import Vuelidate from 'vuelidate'
@@ -11,7 +11,7 @@ import flushPromises from 'flush-promises'
 
 jest.mock('@/services')
 
-describe('<Products />', () => {
+describe('<Product />', () => {
   Vue.use(Vuetify)
   Vue.use(Vuelidate)
   Vue.use(VueTheMask)

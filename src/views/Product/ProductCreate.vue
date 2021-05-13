@@ -1,15 +1,15 @@
 <template>
   <div>
-    <ProductForm />
+    <StockEntryForm />
   </div>
 </template>
 
 <script>
-import ProductForm from '@/components/Product/ProductForm'
+import StockEntryForm from '@/components/Product/ProductForm'
 
 export default {
   name: 'ProductCreate',
-  components: { ProductForm }
+  components: { StockEntryForm }
 }
 </script>
 

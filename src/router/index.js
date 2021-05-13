@@ -3,8 +3,8 @@ import VueRouter from 'vue-router'
 
 const Login = import('@/views/Login')
 
-const ProductsList = import('@/views/Products/ProductsList')
-const ProductCreate = import('@/views/Products/ProductCreate')
+const ProductsList = import('@/views/Product/ProductsList')
+const ProductCreate = import('@/views/Product/ProductCreate')
 
 Vue.use(VueRouter)
 

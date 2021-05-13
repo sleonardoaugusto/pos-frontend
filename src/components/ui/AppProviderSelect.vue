@@ -1,48 +1,46 @@
 <template>
-  <v-row>
-    <v-col cols="12" md="6">
-      <v-combobox
-        id="provider-select"
-        ref="providerSelect"
-        label="Fornecedor"
-        v-model="$v.form.providerSelected.$model"
-        :items="providers"
-        item-value="id"
-        item-text="name"
-        @update:search-input="value => (form.providerName = value)"
-        @change="$emit('select', $event)"
-        :error-messages="errorMessage('providerSelected')"
-      >
-        <template v-slot:no-data>
-          <v-list-item>
-            <v-list-item-content>
-              <v-btn small class="primary" @click="openDialog">
-                Novo
-                <v-icon right>mdi-plus-circle</v-icon>
-              </v-btn>
-            </v-list-item-content>
-          </v-list-item>
-        </template>
-      </v-combobox>
-      <AppDialogConfirm
-        title="Cadastrar fornecedor"
-        :show-dialog="showDialog"
-        text-cancel="fechar"
-        text-confirm="cadastrar"
-        @confirm="onConfirm"
-        @cancel="closeDialog"
-      >
-        <template v-slot:default>
-          <v-text-field
-            id="provider-name"
-            label="Nome"
-            v-model="$v.form.providerName.$model"
-            :error-messages="errorMessage('providerName')"
-          />
-        </template>
-      </AppDialogConfirm>
-    </v-col>
-  </v-row>
+  <div>
+    <v-combobox
+      id="provider-select"
+      ref="providerSelect"
+      label="Fornecedor"
+      v-model="$v.form.providerSelected.$model"
+      :items="providers"
+      item-value="id"
+      item-text="name"
+      @update:search-input="form.providerName = $event"
+      @change="$emit('select', $event.id)"
+      :error-messages="errorMessage('providerSelected')"
+    >
+      <template v-slot:no-data>
+        <v-list-item>
+          <v-list-item-content>
+            <v-btn small class="primary" @click="openDialog">
+              Novo
+              <v-icon right>mdi-plus-circle</v-icon>
+            </v-btn>
+          </v-list-item-content>
+        </v-list-item>
+      </template>
+    </v-combobox>
+    <AppDialogConfirm
+      title="Cadastrar fornecedor"
+      :show-dialog="showDialog"
+      text-cancel="fechar"
+      text-confirm="cadastrar"
+      @confirm="onConfirm"
+      @cancel="closeDialog"
+    >
+      <template v-slot:default>
+        <v-text-field
+          id="provider-name"
+          label="Nome"
+          v-model="$v.form.providerName.$model"
+          :error-messages="errorMessage('providerName')"
+        />
+      </template>
+    </AppDialogConfirm>
+  </div>
 </template>
 
 <script>
@@ -55,12 +53,7 @@ export default {
   name: 'AppProviderSelect',
   components: { AppDialogConfirm },
   mixins: [formValidations],
-  props: {
-    providerId: {
-      type: Number,
-      default: null
-    }
-  },
+  props: ['value'],
   data: () => ({
     providers: [],
     showDialog: false,
@@ -102,8 +95,13 @@ export default {
       }
     }
   },
+  computed: {
+    formIsReady() {
+      return !this.$v.form.providerSelected.$invalid
+    }
+  },
   watch: {
-    providerId(prop) {
+    value(prop) {
       if (prop)
         this.form.providerSelected = this.providers.find(
           provider => provider.id === prop
