@@ -31,6 +31,16 @@
       </v-col>
     </v-row>
     <v-row>
+      <v-col cols="12" md="6">
+        <v-text-field
+          id="description"
+          ref="description"
+          label="Descrição"
+          v-model="form.description"
+        />
+      </v-col>
+    </v-row>
+    <v-row>
       <v-col>
         <v-btn id="submit" color="primary" @click="onSubmit">Cadastrar</v-btn>
       </v-col>
@@ -51,7 +61,8 @@ export default {
     form: {
       provider: '',
       name: '',
-      qty: 1
+      qty: 1,
+      description: ''
     }
   }),
   validations() {

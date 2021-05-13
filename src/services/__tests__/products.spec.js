@@ -40,4 +40,25 @@ describe('Product service', () => {
       expect(resp).toEqual(responseData)
     })
   })
+
+  describe('Get all products', () => {
+    let responseData
+
+    beforeEach(() => {
+      responseData = [faker.random.uuid(), faker.random.uuid()]
+      httpClient.get.mockResolvedValueOnce({ data: responseData })
+    })
+
+    it('Should get all products', () => {
+      const spy = jest.spyOn(httpClient, 'get')
+
+      service.getAll()
+      expect(spy).toHaveBeenCalledWith('/products/')
+    })
+
+    it('Should return response data', async () => {
+      const resp = await service.getAll()
+      expect(resp).toEqual(responseData)
+    })
+  })
 })

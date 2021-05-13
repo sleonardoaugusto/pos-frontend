@@ -4,9 +4,9 @@ import Vuelidate from 'vuelidate'
 import VueTheMask from 'vue-the-mask'
 import busy from '@/mixins/busy'
 import { mount } from '@vue/test-utils'
-import AppProviderSelect from '@/components/ui/AppProviderSelect'
 import faker from 'faker'
 import ProductForm from '@/components/Product/ProductForm'
+import AppProviderSelect from '@/components/ui/AppProviderSelect'
 
 jest.mock('@/services')
 
@@ -40,18 +40,21 @@ describe('<Product />', () => {
     expect(wrapper.vm).toBeDefined()
   })
 
-  it('Should touch child component on submit button click', async () => {
-    const spy = jest.spyOn(wrapper.findComponent(AppProviderSelect).vm, 'touch')
-    await wrapper.find('#submit').trigger('click')
-    expect(spy).toHaveBeenCalled()
-  })
+  it.each([['#description', 'description']])(
+    '%s field should not be required',
+    async (fieldId, fieldRef) => {
+      await wrapper.find('#description').setValue(null)
+      expect(wrapper.findComponent({ ref: fieldRef }).vm.errorMessages).toEqual(
+        []
+      )
+    }
+  )
 
   it.each([
     ['#name', 'name', faker.random.word()],
-    ['#qty', 'qty', faker.random.number({ min: 1 })],
-    ['#description', 'description', faker.random.number({ min: 1 })]
+    ['#qty', 'qty', faker.random.number({ min: 1 })]
   ])(
-    '%s name field should should be valid if has value',
+    '%s field should be valid if has value',
     async (fieldId, fieldRef, value) => {
       await wrapper.find(fieldId).setValue(value)
       expect(wrapper.findComponent({ ref: fieldRef }).vm.errorMessages).toBe(
@@ -64,7 +67,7 @@ describe('<Product />', () => {
     ['#name', 'name'],
     ['#qty', 'qty']
   ])(
-    '%s field should should be invalid if has no value',
+    '%s field should be invalid if has no value',
     async (fieldId, fieldRef) => {
       await wrapper.find(fieldId).setValue(null)
       expect(wrapper.findComponent({ ref: fieldRef }).vm.errorMessages).toBe(
@@ -77,7 +80,7 @@ describe('<Product />', () => {
     ['#name', 'name'],
     ['#qty', 'qty']
   ])(
-    'Should touch %s field should be invalid on submit button click',
+    'Field %s should be invalid on submit button click',
     async (_, fieldRef) => {
       await wrapper.setData({ form: {} })
 
@@ -88,6 +91,26 @@ describe('<Product />', () => {
     }
   )
 
+  it.each([
+    ['#name', null],
+    ['#qty', null]
+  ])(
+    'should not emit submit event if %s field is not valid',
+    async (fieldId, value) => {
+      await fillForm()
+
+      await wrapper.find(fieldId).setValue(value)
+      await wrapper.find('#submit').trigger('click')
+      expect(wrapper.emitted().submit).toBeFalsy()
+    }
+  )
+
+  it('Should touch child component on submit button click', async () => {
+    const spy = jest.spyOn(wrapper.findComponent(AppProviderSelect).vm, 'touch')
+    await wrapper.find('#submit').trigger('click')
+    expect(spy).toHaveBeenCalled()
+  })
+
   it('Should not emit submit event on button click if provider component is not valid', async () => {
     AppProviderSelectStub.computed.formIsReady = () => false
     wrapper = factory()
@@ -97,32 +120,22 @@ describe('<Product />', () => {
     expect(wrapper.emitted().submit).toBeFalsy()
   })
 
-  it.each([
-    ['name', null],
-    ['qty', null]
-  ])(
-    'should not emit submit event on button click if %s form attribute is not valid',
-    async (attr, value) => {
-      await fillForm()
-
-      await wrapper.setData({ form: { [`${attr}`]: value } })
-      await wrapper.find('#submit').trigger('click')
-      expect(wrapper.emitted().submit).toBeFalsy()
-    }
-  )
-
   it('Should emit submit event on button click if form is valid', async () => {
     const { provider, qty, name, description } = await fillForm()
+
     await wrapper.find('#submit').trigger('click')
-    expect(wrapper.emitted().submit).toBeTruthy()
+    expect(wrapper.emitted().submit).toHaveLength(1)
     expect(wrapper.emitted().submit[0]).toEqual([
       { provider, qty, name, description }
     ])
   })
 
   const fillForm = async () => {
+    const provider = faker.random.uuid()
+    await wrapper.findComponent(AppProviderSelect).vm.$emit('select', provider)
+
     const data = {
-      provider: faker.random.uuid(),
+      provider,
       name: faker.random.word(),
       qty: faker.random.number({ min: 1 }),
       description: faker.random.word()

@@ -1,7 +1,3 @@
-//{
-//     "access_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjE4MjA5Mjc5LCJqdGkiOiJlYjIzZDUwOTM1Yzk0NzRlOWEwMzIyMTA2NjdkODBiZCIsInVzZXJfaWQiOjJ9.sZ932RotyiHwvc6Bod---kk9-PNm1wtqjTsV-zzvLhI",
-//     "refresh_token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTYxODI5NTM3OSwianRpIjoiMWI2OTE0YTFjNTNkNGJjM2I1Yzk4YjYwMzU1OGFkNTEiLCJ1c2VyX2lkIjoyfQ.03Gc8lwyQlRBwNEkgZJT4OrrUvKhfFUzG-N07vTqXqo"
-// }
 import Auth from '@/services/auth'
 import faker from 'faker'
 
