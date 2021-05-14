@@ -4,11 +4,11 @@
       id="product-select"
       ref="productSelect"
       label="Produto"
-      v-model="form.productSelected"
+      v-model="productSelected"
       :items="products"
       item-value="id"
       item-text="name"
-      @update:search-input="dialogForm.name = $event"
+      @update:search-input="form.name = $event"
       @change="$emit('select', $event.id)"
     >
       <template v-slot:no-data>
@@ -32,7 +32,7 @@
       :max-width="580"
     >
       <template v-slot:default>
-        <ProductForm :value="dialogForm" @change="dialogForm = $event" />
+        <ProductForm ref="productForm" :value="form" @change="form = $event" />
       </template>
     </AppDialogConfirm>
   </div>
@@ -49,10 +49,8 @@ export default {
   data: () => ({
     products: [],
     showDialog: false,
+    productSelected: '',
     form: {
-      productSelected: ''
-    },
-    dialogForm: {
       name: ''
     }
   }),
@@ -67,11 +65,14 @@ export default {
       this.showDialog = true
     },
     async onConfirm() {
-      const { name } = this.dialogForm
-      await services.products.create({ name })
-      await this.getProducts()
-      this.form.productSelected = ''
-      this.closeDialog()
+      const { name } = this.form
+      this.$refs.productForm.touch()
+      if (this.$refs.productForm.formIsReady) {
+        await services.products.create({ name })
+        await this.getProducts()
+        this.closeDialog()
+        this.productSelected = ''
+      }
     },
     closeDialog() {
       this.showDialog = false
