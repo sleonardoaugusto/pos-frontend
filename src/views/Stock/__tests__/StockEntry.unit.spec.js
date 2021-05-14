@@ -8,6 +8,8 @@ import busy from '@/mixins/busy'
 import faker from 'faker'
 import AppProviderSelect from '@/components/ui/AppProviderSelect'
 
+jest.mock('@/services')
+
 describe('<StockEntry />', () => {
   Vue.use(Vuetify)
   Vue.use(Vuelidate)
