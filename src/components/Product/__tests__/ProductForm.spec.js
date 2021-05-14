@@ -6,7 +6,6 @@ import busy from '@/mixins/busy'
 import { mount } from '@vue/test-utils'
 import faker from 'faker'
 import ProductForm from '@/components/Product/ProductForm'
-import AppProviderSelect from '@/components/ui/AppProviderSelect'
 
 jest.mock('@/services')
 
@@ -76,71 +75,36 @@ describe('<Product />', () => {
     }
   )
 
-  it.each([
-    ['#name', 'name'],
-    ['#qty', 'qty']
-  ])(
-    'Field %s should be invalid on submit button click',
-    async (_, fieldRef) => {
-      await wrapper.setData({ form: {} })
-
-      await wrapper.find('#submit').trigger('click')
-      expect(wrapper.findComponent({ ref: fieldRef }).vm.errorMessages).toBe(
-        'Campo obrigatório'
-      )
-    }
-  )
+  it('Should fill form with received props', async () => {
+    const props = { name: faker.lorem.words() }
+    await wrapper.setProps({ value: props })
+    expect(wrapper.find('#name').element.value).toBe(props.name)
+  })
 
   it.each([
-    ['#name', null],
-    ['#qty', null]
+    ['#name', 'name', faker.random.word()],
+    ['#qty', 'qty', faker.random.number({ min: 1 })]
   ])(
-    'should not emit submit event if %s field is not valid',
-    async (fieldId, value) => {
-      await fillForm()
-
+    'Should emit form on field %s change',
+    async (fieldId, attrName, value) => {
       await wrapper.find(fieldId).setValue(value)
-      await wrapper.find('#submit').trigger('click')
-      expect(wrapper.emitted().submit).toBeFalsy()
+      const payload = { ...wrapper.vm.form, [`${attrName}`]: value }
+      expect(wrapper.emitted().change).toBeTruthy()
+      expect(wrapper.emitted().change[0]).toEqual([payload])
     }
   )
 
-  it('Should touch child component on submit button click', async () => {
-    const spy = jest.spyOn(wrapper.findComponent(AppProviderSelect).vm, 'touch')
-    await wrapper.find('#submit').trigger('click')
-    expect(spy).toHaveBeenCalled()
-  })
-
-  it('Should not emit submit event on button click if provider component is not valid', async () => {
-    AppProviderSelectStub.computed.formIsReady = () => false
-    wrapper = factory()
-    await fillForm()
-
-    await wrapper.find('#submit').trigger('click')
-    expect(wrapper.emitted().submit).toBeFalsy()
-  })
-
-  it('Should emit submit event on button click if form is valid', async () => {
-    const { provider, qty, name, description } = await fillForm()
-
-    await wrapper.find('#submit').trigger('click')
-    expect(wrapper.emitted().submit).toHaveLength(1)
-    expect(wrapper.emitted().submit[0]).toEqual([
-      { provider, qty, name, description }
-    ])
-  })
-
-  const fillForm = async () => {
-    const provider = faker.random.uuid()
-    await wrapper.findComponent(AppProviderSelect).vm.$emit('select', provider)
-
-    const data = {
-      provider,
-      name: faker.random.word(),
-      qty: faker.random.number({ min: 1 }),
-      description: faker.random.word()
+  it.each([
+    ['#name', 'name', faker.random.word()],
+    ['#qty', 'qty', faker.random.number({ min: 1 })]
+  ])(
+    'Should not emit the same form twice',
+    async (fieldId, attrName, value) => {
+      await wrapper.find(fieldId).setValue(value)
+      await wrapper.setProps({
+        value: { ...wrapper.vm.form, [`${attrName}`]: value }
+      })
+      expect(wrapper.emitted().change).toHaveLength(1)
     }
-    await wrapper.setData({ form: { ...data } })
-    return { ...data }
-  }
+  )
 })

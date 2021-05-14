@@ -10,6 +10,9 @@ class Products {
       .get(`/products/${productId}/`)
       .then(response => response.data)
   }
+  async create({ name } = {}) {
+    return await this.http.post('/products/', { name })
+  }
 }
 
 const factory = httpClient => new Products(httpClient)

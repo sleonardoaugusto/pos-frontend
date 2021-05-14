@@ -1,15 +1,25 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
-const Login = import('@/views/Login')
-
 Vue.use(VueRouter)
 
 export const routes = [
   {
     path: '/login/',
     name: 'login',
-    component: () => Login
+    component: () => import('@/views/Login')
+  },
+  {
+    path: '/estoque',
+    name: 'stock',
+    component: () => import('@/views/Stock'),
+    children: [
+      {
+        path: 'entrada',
+        name: 'stock-entry',
+        component: () => import('@/views/Stock/StockEntry')
+      }
+    ]
   },
   {
     path: '*',

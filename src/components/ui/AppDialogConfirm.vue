@@ -3,7 +3,7 @@
     <v-dialog
       v-model="internalShowDialog"
       @keydown.esc="onCancel"
-      max-width="290"
+      :max-width="maxWidth"
     >
       <v-card>
         <v-card-title class="headline">{{ title }}</v-card-title>
@@ -46,6 +46,10 @@ export default {
     textConfirm: {
       type: String,
       default: 'sim'
+    },
+    maxWidth: {
+      type: Number,
+      default: 290
     }
   },
   data: () => ({

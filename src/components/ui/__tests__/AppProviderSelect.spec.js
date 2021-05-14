@@ -51,10 +51,10 @@ describe('<AppProviderSelect />', () => {
 
   it('Should create provider', async () => {
     const spy = jest.spyOn(services.providers, 'create')
-    await wrapper.setData({ showDialog: true })
-
     const providerName = faker.lorem.word()
     await wrapper.find('#provider-select').setValue(providerName)
+
+    await wrapper.vm.openDialog()
     await wrapper.find('#confirm').trigger('click')
     expect(spy).toHaveBeenCalledWith(providerName)
   })

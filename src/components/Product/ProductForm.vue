@@ -2,13 +2,6 @@
   <v-form>
     <v-row>
       <v-col cols="12" md="6">
-        <AppProviderSelect
-          ref="appProviderSelect"
-          @select="form.provider = $event"
-          :value="form.provider"
-        />
-      </v-col>
-      <v-col cols="12" md="6">
         <v-text-field
           id="name"
           ref="name"
@@ -17,18 +10,18 @@
           :error-messages="errorMessage('name')"
         />
       </v-col>
-    </v-row>
-    <v-row>
       <v-col cols="12" md="6">
         <v-text-field
           id="qty"
           ref="qty"
           label="Quantidade"
           type="number"
-          v-model="$v.form.qty.$model"
+          v-model.number="$v.form.qty.$model"
           :error-messages="errorMessage('qty')"
         />
       </v-col>
+    </v-row>
+    <v-row>
       <v-col cols="12" md="6">
         <v-text-field
           id="description"
@@ -38,26 +31,19 @@
         />
       </v-col>
     </v-row>
-    <v-row>
-      <v-col>
-        <v-btn id="submit" color="primary" @click="onSubmit">Cadastrar</v-btn>
-      </v-col>
-    </v-row>
   </v-form>
 </template>
 
 <script>
-import AppProviderSelect from '@/components/ui/AppProviderSelect'
 import formValidations from '@/mixins/formValidations'
 import { required } from 'vuelidate/lib/validators'
 
 export default {
   name: 'ProductForm',
-  components: { AppProviderSelect },
   mixins: [formValidations],
+  props: ['value'],
   data: () => ({
     form: {
-      provider: '',
       name: '',
       qty: 1,
       description: ''
@@ -66,9 +52,6 @@ export default {
   validations() {
     return {
       form: {
-        provider: {
-          providerIsInvalid: () => this.$refs.appProviderSelect.formIsReady
-        },
         name: {
           required
         },
@@ -78,11 +61,23 @@ export default {
       }
     }
   },
-  methods: {
-    onSubmit() {
-      this.touch()
-      this.$refs.appProviderSelect.touch()
-      if (this.formIsReady) this.$emit('submit', this.form)
+  watch: {
+    value: {
+      deep: true,
+      immediate: true,
+      handler(props) {
+        if (
+          typeof props === 'object' &&
+          JSON.stringify(props) !== JSON.stringify(this.form)
+        )
+          this.form = { ...this.form, ...props }
+      }
+    },
+    form: {
+      deep: true,
+      handler(form) {
+        this.$emit('change', form)
+      }
     }
   }
 }

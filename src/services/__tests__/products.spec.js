@@ -61,4 +61,14 @@ describe('Product service', () => {
       expect(resp).toEqual(responseData)
     })
   })
+
+  describe('Create product', () => {
+    it('Should post product', () => {
+      const spy = jest.spyOn(httpClient, 'post')
+
+      const params = { name: faker.lorem.words() }
+      service.create(params)
+      expect(spy).toHaveBeenCalledWith('/products/', params)
+    })
+  })
 })
