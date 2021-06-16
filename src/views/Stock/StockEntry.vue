@@ -9,7 +9,7 @@
         />
       </v-col>
       <v-col cols="12" md="12">
-        <ProductTableRow />
+        <ProductTable />
       </v-col>
     </v-row>
     <v-row>
@@ -23,11 +23,11 @@
 <script>
 import AppProviderSelect from '@/components/ui/AppProviderSelect'
 import formValidations from '@/mixins/formValidations'
-import ProductTableRow from '@/components/Product/ProductTableRow'
+import ProductTable from '@/components/Product/ProductTable'
 
 export default {
   name: 'StockEntry',
-  components: { ProductTableRow, AppProviderSelect },
+  components: { ProductTable, AppProviderSelect },
   mixins: [formValidations],
   data: () => ({
     form: {

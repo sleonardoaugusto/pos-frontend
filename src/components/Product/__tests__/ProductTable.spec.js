@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Vuetify from 'vuetify'
 import { mount } from '@vue/test-utils'
-import ProductTableRow from '@/components/Product/ProductTableRow'
+import ProductTable from '@/components/Product/ProductTable'
 
 describe('<Product />', () => {
   Vue.use(Vuetify)
@@ -14,7 +14,7 @@ describe('<Product />', () => {
     wrapper = factory()
   })
 
-  const factory = opts => mount(ProductTableRow, { Vue, vuetify, ...opts })
+  const factory = opts => mount(ProductTable, { Vue, vuetify, ...opts })
 
   it('Component should be defined', () => {
     expect(wrapper).toBeDefined()

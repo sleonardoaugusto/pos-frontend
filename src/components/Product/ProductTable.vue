@@ -10,6 +10,31 @@
           <v-icon size="18"> mdi-delete </v-icon>
         </v-btn>
       </template>
+      <template v-slot:item.name="props">
+        <v-edit-dialog :return-value.sync="props.item.name">
+          {{ props.item.name }}
+          <template v-slot:input>
+            <v-text-field
+              v-model="props.item.name"
+              label="Editar"
+              single-line
+            />
+          </template>
+        </v-edit-dialog>
+      </template>
+      <template v-slot:item.qty="props">
+        <v-edit-dialog :return-value.sync="props.item.qty">
+          {{ props.item.qty }}
+          <template v-slot:input>
+            <v-text-field
+              v-model.number="props.item.qty"
+              type="number"
+              label="Editar"
+              single-line
+            />
+          </template>
+        </v-edit-dialog>
+      </template>
     </v-data-table>
     <v-btn id="add-product" @click="productAdd" icon>
       <v-icon size="18"> mdi-plus </v-icon>
@@ -19,7 +44,7 @@
 
 <script>
 export default {
-  name: 'ProductTableRow',
+  name: 'ProductTable',
   data: () => ({
     headers: [
       { text: 'Produto', value: 'name' },
@@ -30,7 +55,7 @@ export default {
   }),
   methods: {
     productAdd() {
-      this.products.push({ id: Math.random(), name: Math.random() })
+      this.products.push({ id: Math.random(), name: 'Nome do Produto', qty: 0 })
     },
     productRemove(productId) {
       this.products = this.products.filter(product => product.id !== productId)
