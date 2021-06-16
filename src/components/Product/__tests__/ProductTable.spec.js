@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuetify from 'vuetify'
 import { mount } from '@vue/test-utils'
 import ProductTable from '@/components/Product/ProductTable'
+import faker from 'faker'
 
 describe('<Product />', () => {
   Vue.use(Vuetify)
@@ -38,5 +39,18 @@ describe('<Product />', () => {
     await wrapper.find('#remove-product-3').trigger('click')
     expect(wrapper.findAll('tbody > tr')).toHaveLength(1)
     expect(wrapper.findAll('tbody > tr').at(0).text()).toBe('name2')
+  })
+
+  it('Should emit event on data change', async () => {
+    const data = {
+      id: faker.random.uuid(),
+      name: faker.random.uuid(),
+      qty: faker.random.number({ min: 1 })
+    }
+    await wrapper.setData({
+      products: [data]
+    })
+    expect(wrapper.emitted().change).toBeTruthy()
+    expect(wrapper.emitted().change[0]).toEqual([[data]])
   })
 })

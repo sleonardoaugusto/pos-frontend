@@ -9,7 +9,7 @@
         />
       </v-col>
       <v-col cols="12" md="12">
-        <ProductTable />
+        <ProductTable @change="payload => (form.products = payload)" />
       </v-col>
     </v-row>
     <v-row>
@@ -31,7 +31,8 @@ export default {
   mixins: [formValidations],
   data: () => ({
     form: {
-      provider: ''
+      provider: '',
+      products: []
     }
   }),
   validations() {

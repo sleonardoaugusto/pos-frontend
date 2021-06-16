@@ -7,6 +7,7 @@ import VueTheMask from 'vue-the-mask'
 import busy from '@/mixins/busy'
 import faker from 'faker'
 import AppProviderSelect from '@/components/ui/AppProviderSelect'
+import ProductTable from '@/components/Product/ProductTable'
 
 jest.mock('@/services')
 
@@ -53,18 +54,20 @@ describe('<StockEntry />', () => {
   })
 
   it('Should emit submit event on button click if form is valid', async () => {
-    const { provider } = await fillForm()
+    const { provider, products } = await fillForm()
 
     await wrapper.find('#submit').trigger('click')
     expect(wrapper.emitted().submit).toBeTruthy()
     expect(wrapper.emitted().submit).toHaveLength(1)
-    expect(wrapper.emitted().submit[0]).toEqual([{ provider }])
+    expect(wrapper.emitted().submit[0]).toEqual([{ provider, products }])
   })
 
   const fillForm = async () => {
     const provider = faker.random.uuid()
     await wrapper.findComponent(AppProviderSelect).vm.$emit('select', provider)
+    const products = [{ id: faker.random.uuid() }]
+    await wrapper.findComponent(ProductTable).vm.$emit('change', products)
 
-    return { provider }
+    return { provider, products }
   }
 })

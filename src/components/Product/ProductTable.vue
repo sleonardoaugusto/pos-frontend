@@ -60,6 +60,14 @@ export default {
     productRemove(productId) {
       this.products = this.products.filter(product => product.id !== productId)
     }
+  },
+  watch: {
+    products: {
+      deep: true,
+      handler(val) {
+        this.$emit('change', val)
+      }
+    }
   }
 }
 </script>
