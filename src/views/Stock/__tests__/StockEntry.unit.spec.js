@@ -20,6 +20,7 @@ describe('<StockEntry />', () => {
   let vuetify
   let stubs
   let AppProviderSelectStub
+  let ProductTableStub
 
   beforeEach(() => {
     AppProviderSelectStub = {
@@ -27,7 +28,15 @@ describe('<StockEntry />', () => {
       methods: { touch: jest.fn() },
       computed: { formIsReady: () => true }
     }
-    stubs = { AppProviderSelect: AppProviderSelectStub }
+    ProductTableStub = {
+      render: () => {},
+      methods: { touch: jest.fn() },
+      computed: { formIsReady: () => true }
+    }
+    stubs = {
+      AppProviderSelect: AppProviderSelectStub,
+      ProductTable: ProductTableStub
+    }
     vuetify = new Vuetify()
     wrapper = factory()
   })
